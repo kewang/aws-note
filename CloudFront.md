@@ -24,6 +24,28 @@
 * 超過1000次主動清除：0.005
 
 ## 檔案逾時(expiration)
-預設儲存24hr，如果逾時後，edge location會再去orogin server下載一次
+預設儲存24hr，如果逾時後，edge location會再去origin server下載一次
 
-### 使用方式
+### 設定方式
+* 使用HTTP Header的「Cache-Control」、「Expire」、「Pragma」來判斷，**所以S3的bucket-object規劃很重要**。
+* 最短只能設定1hr，最大無上限
+* **逾時設定1~24hr時，要重新思考是否要使用CDN，或是改變系統架構**
+
+### 實務作法
+* 一般逾時是設定1yr以上
+* 若在逾時前origin server就已經變更檔案內容，可以利用versioning URL的方式騙過browser，使browser重新下載檔案
+
+#### Versioning URL
+把版本資訊加在URL裡面，例如開發時的檔名叫做js/jquery.js，但是在deploy到origin server時，把檔案存成js/v1/jquery.js或js/jquery_v1.js
+
+1. 把版本號v1變成metadata存在系統設定裡
+2. 輸出URL到網頁上時，把版號加在URL內，如js/v1/jquery.js
+3. 因為URL改變，所以client一定會下載新的檔案
+
+## edge location到origin server抓檔案的時機
+* 檔案沒有request過
+* 檔案逾時
+* 被edge location移除(eviction)
+
+### 檔案移除(eviction)
+若某個檔案還沒逾時，但是很少request，edge location為了調節資源，所以將少request的檔案移除。
