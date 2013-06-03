@@ -49,3 +49,12 @@
 
 ### 檔案移除(eviction)
 若某個檔案還沒逾時，但是很少request，edge location為了調節資源，所以將少request的檔案移除。
+
+## 發佈單位(distribution)
+* 代表一個origin server和一個domain的連結
+* 建立distribution時，CloutFront會產生一個動態網址，用來讀取origin server用的。
+* 動態網址用來讀取origin server用的，在不同地區的使用者解析網址時，會得到不同的IP
+
+## 從S3改用CloudFront的好處
+* S3：提供最正確的檔案版本，超高耐久性(drability)及可用性
+* CloudFront：在大部分的地點傳輸費用比S3便宜，雖然同一個檔案會被多個edge location讀取，但只要同一個檔案被讀多次，就會比S3便宜。低latency，傳輸速度快。
