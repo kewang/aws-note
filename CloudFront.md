@@ -54,7 +54,13 @@
 * 代表一個origin server和一個domain的連結
 * 建立distribution時，CloutFront會產生一個動態網址，用來讀取origin server用的。
 * 動態網址用來讀取origin server用的，在不同地區的使用者解析網址時，會得到不同的IP
+* 一個distribution最多可以有10個CNAME。**根據Yahoo研究，多網域名稱加速下載以2-4個最佳**，[文章](http://www.yuiblog.com/blog/2007/04/11/performance-research-part-4/)
 
 ## 從S3改用CloudFront的好處
-* S3：提供最正確的檔案版本，超高耐久性(drability)及可用性
+* S3：提供最正確的檔案版本，超高耐久性(durability)及可用性
 * CloudFront：在大部分的地點傳輸費用比S3便宜，雖然同一個檔案會被多個edge location讀取，但只要同一個檔案被讀多次，就會比S3便宜。低latency，傳輸速度快。
+
+### 設定到自己domain的步驟
+1. 先指定一個s3的bucket，這是要給CloudFront用的，例如：ggg.s3.amazonaws.com
+2. 當distribution新增後，會產生一組domain name，例如：dgh6d9b753lda.cloudfront.net
+3. 在DNS管理介面增加CNAME，將CloudFront與自己domain連結起來，例如：「ggg.com CNAME dgh6d9b753lda.cloudfront.net」，這樣就完成了
