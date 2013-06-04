@@ -54,7 +54,7 @@
 * 代表一個origin server和一個domain的連結
 * 建立distribution時，CloutFront會產生一個動態網址，用來讀取origin server用的。
 * 動態網址用來讀取origin server用的，在不同地區的使用者解析網址時，會得到不同的IP
-* 一個distribution最多可以有10個CNAME。**根據Yahoo研究，多網域名稱加速下載以2-4個最佳**，[文章](http://www.yuiblog.com/blog/2007/04/11/performance-research-part-4/)
+* 一個distribution最多可以有10個CNAME。 **根據Yahoo研究，多網域名稱加速下載以2-4個最佳** ，[文章](http://www.yuiblog.com/blog/2007/04/11/performance-research-part-4/)
 
 ## 從S3改用CloudFront的好處
 * S3：提供最正確的檔案版本，超高耐久性(durability)及可用性
