@@ -45,3 +45,12 @@ LB會ping已經設定好的instance，若ping有通過，則LB就會導到這一
 * Interval：預設為30秒，每30秒會ping一次。
 * Unhealthy Threshold：ping連續失敗的次數之後，就視為沒通過(不健康)，預設為2次。
 * Healthy Threshold：ping連續成功的次數之後，就視為通過(健康)，預設為10次。
+
+## SSH Login
+ssh -i keypair.pem xxxx@a.b.c.d
+
+### 不使用憑證連線的方式
+1. 修改/etc/ssh/sshd_config：將PasswordAuthentication改為yes
+2. 重啟sshd：sudo service sshd restart
+3. 記得修改登入帳號的密碼：sudo passwd user-name
+4. 回到本機端，使用ssh登入：ssh xxx@a.b.c.d
