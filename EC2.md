@@ -22,9 +22,9 @@ EC2的metadata，因為EC2沒有階層關係，可以利用tag模擬階層。例
 * server-type: web, ftp, mail...
 
 ## EBS(elastic block store)
-類似SAN(Storage area network)的概念，可以隨時mount到EC2上面，並且可以隨時做snapshot，方便備份。
-Mount的指令如下，假設目前位置為/dev/xvdf：
-1. sudo mkfs.ext4 /dev/xvdf
-2. sudo mkdir -m 000 /vol
-3. echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
-4. sudo mount /vol
+類似SAN(Storage area network)的概念，可以隨時mount到EC2上面，並且可以隨時做snapshot，方便備份。Mount的指令如下，假設目前位置為/dev/xvdf：
+
+1.     sudo mkfs.ext4 /dev/xvdf
+2.     sudo mkdir -m 000 /vol
+3.     echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
+4.     sudo mount /vol
