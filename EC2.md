@@ -22,9 +22,26 @@ EC2的metadata，因為EC2沒有階層關係，可以利用tag模擬階層。例
 * server-type: web, ftp, mail...
 
 ## EBS(elastic block store)
-類似SAN(Storage area network)的概念，可以隨時mount到EC2上面，並且可以隨時做snapshot，方便備份。Mount的指令如下，假設目前位置為/dev/xvdf：
+類似SAN(Storage area network)的概念，可以隨時mount儲存區到EC2上面，並且可以隨時做snapshot，方便備份。Mount的指令如下，假設目前位置為/dev/xvdf：
 
-1.     sudo mkfs.ext4 /dev/xvdf
-2.     sudo mkdir -m 000 /vol
-3.     echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
-4.     sudo mount /vol
+1. sudo mkfs.ext4 /dev/xvdf
+2. sudo mkdir -m 000 /vol
+3. echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
+4. sudo mount /vol
+
+## Security Groups
+防火牆的規則，可以設定inbound(連入)及outbound(連出)。
+
+## EIP (Elastic IP)
+因為每次Instance重開機後，Public IP都會變更，所以如果要固定IP時，就要使用EIP與instance綁住。
+
+## Load Balancer
+一般而言，網路服務架設EC2都會安裝許多台web在上面，所以如果要分散Loading時，就要安裝Load Balancer。
+
+### 運作原理(Health Check)
+LB會ping已經設定好的instance，若ping有通過，則LB就會導到這一台，ping的方式如下
+* Protocol：可以用HTTP, HTTPS, TCP, SSL，若服務的是web server，一般是使用HTTP
+* Timeout：預設為5秒
+* Interval：預設為30秒，每30秒會ping一次。
+* Unhealthy Threshold：ping連續失敗的次數之後，就視為沒通過(不健康)，預設為2次。
+* Healthy Threshold：ping連續成功的次數之後，就視為通過(健康)，預設為10次。
