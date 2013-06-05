@@ -1,11 +1,11 @@
 # EC2
-強大的虛擬機器
-
-## 概述
-依照CPU及MEM的等級分為很多種type，免費版本(free-tier)是T1 Micro(t1.micro)
+強大的虛擬機器，依照CPU及MEM的等級分為很多種type，免費版本(free-tier)是T1 Micro(t1.micro)
 
 ## AMI
 有amazon官方提供的，也有其他linux distro.提供的，但amazon提供的Amazon Linux(based on CentOS)有最佳化過。
+
+### Create Image
+建置完系統環境時，應該要做一份Image，這樣子之後要新增機器時，可以直接用這份Image快速建置。
 
 ## 開機時的檢查(Status Check)
 總共會做System Status Check以及Instance Status Check，若任何一種失敗可以觸發Alarm。
@@ -20,3 +20,5 @@ EC2的metadata，因為EC2沒有階層關係，可以利用tag模擬階層。例
 * owner: kewang, joseph, jason, winnie...
 * environment: production, test, development...
 * server-type: web, ftp, mail...
+
+## Volumes
