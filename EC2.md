@@ -60,6 +60,7 @@ ssh -i keypair.pem xxxx@a.b.c.d
 
 ### 設定憑證
 因為一般操作EC2或其他AWS服務的管理人員可能不一樣，所以要在IAM上面設定憑證來控制權限，控制哪些服務可以給哪些管理人員使用。
+
 1. openssl genrsa -out pk-amazon.pem 2048
 2. openssl req -new -x509 -key pk-amazon.pem -out **cert-amazon.pem** -days 3650
 3. openssl pkcs8 -topk8 -in pk-amazon.pem -nocrypt > pk-temp.pem
