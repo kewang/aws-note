@@ -2,7 +2,7 @@
 強大的虛擬機器，依照CPU及MEM的等級分為很多種type，免費版本(free-tier)是T1 Micro(t1.micro)
 
 ## AMI(Amazon Machine Image)
-新建instance時必須要掛載AMI，類似安裝檔的類似。有amazon官方提供的，也有其他linux distro.提供的，但amazon提供的Amazon Linux(based on CentOS)有最佳化過。
+新建instance時必須要掛載AMI，類似系統安裝檔。有amazon官方提供的，也有其他linux distro.提供的，但amazon提供的Amazon Linux(based on CentOS)有最佳化過。
 
 ### Create Image
 建置完系統環境時，應該要做一份Image，這樣子之後要新增機器時，可以直接用這份Image快速建置。
