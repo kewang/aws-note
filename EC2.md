@@ -59,6 +59,20 @@ ssh -i keypair.pem xxxx@a.b.c.d
 因為不是所有的EC2功能(如：Auto Scaling)都有網頁介面，所以必須要利用Command Line操作EC2。操作Tools之前要設定憑證及環境變數。
 
 ### 設定憑證
-因為一般操作EC2及S3或其他AWS服務人員可能不一樣，所以要在IAM上面設定憑證來控制權限。
+因為一般操作EC2或其他AWS服務的管理人員可能不一樣，所以要在IAM上面設定憑證來控制權限，控制哪些服務可以給哪些管理人員使用。
+1. openssl genrsa -out pk-amazon.pem 2048
+2. openssl req -new -x509 -key pk-amazon.pem -out **cert-amazon.pem** -days 3650
+3. openssl pkcs8 -topk8 -in pk-amazon.pem -nocrypt > pk-temp.pem
+4. mv pk-temp.pem **pk-amazon.pem**
+
+以上指令完成之後所產生的cert-amazon及pk-amazon就是我們要的憑證檔，最後到IAM裡面的User設定值有一個Manage Signing Certificates，複製cert內容就完成憑證設定。
+* cert-amazon.pem：為EC2的cert
+* pk-amazon.pem：為EC2的private key
 
 ### 設定環境變數
+在shell設定檔裡面(.zshrc, .bashrc...等)，設定以下的環境變數就可以了。
+
+* export EC2_PRIVATE_KEY="~/aws/key/pk-amazon.pem"
+* export EC2_CERT="~/aws/key/cert-amazon.pem"
+* export EC2_URL="http://ec2.ap-northeast-1.amazonaws.com"
+* export EC2_REGION="ap-northeast-1"
