@@ -15,8 +15,10 @@
 
 ### 門檻(threshold)
 依照取樣時間設計，若現在想做連續兩次取樣10mins，則threshold要設計為20mins，而取樣時間要設計為10mins
-* 在threshold範圍內的狀態為OK
-* 範圍外的狀態為ALARM
-* 資料不完整的狀態為INSUFFICIENT DATA
+* OK：在threshold範圍內的狀態
+* ALARM：在threshold範圍外的狀態
+* INSUFFICIENT：資料不完整的狀態
 
 ### Alarm轉換狀態時的動作(Action)
+* 依照不同評測資料而有不同的action，例如EC2的Instance metric可以寄送mail、關機，而EBS的相關metric只能寄送mail。
+* 一個Alarm可以使用多個action。
