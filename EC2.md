@@ -54,3 +54,11 @@ ssh -i keypair.pem xxxx@a.b.c.d
 2. 重啟sshd：sudo service sshd restart
 3. 記得修改登入帳號的密碼：sudo passwd user-name
 4. 回到本機端，使用ssh登入：ssh xxx@a.b.c.d
+
+## EC2 API Tools
+因為不是所有的EC2功能(如：Auto Scaling)都有網頁介面，所以必須要利用Command Line操作EC2。操作Tools之前要設定憑證及環境變數。
+
+### 設定憑證
+因為一般操作EC2及S3或其他AWS服務人員可能不一樣，所以要在IAM上面設定憑證來控制權限。
+
+### 設定環境變數
