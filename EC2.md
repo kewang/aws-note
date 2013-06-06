@@ -46,6 +46,12 @@ LB會ping已經設定好的instance，若ping有通過，則LB就會導到這一
 * Unhealthy Threshold：ping連續失敗的次數之後，就視為沒通過(不健康)，預設為2次。
 * Healthy Threshold：ping連續成功的次數之後，就視為通過(健康)，預設為10次。
 
+### 保持session狀態(Sticky Session)
+client在第一次連到LB時，會取得一個cookie，這個cookie的作用是把下一次client又連到LB時，讓client連到同一台instance，如此instance就不用重新建立connection，節省資源。分為兩種sticky session：
+
+* duration-based：設定expiration time，在時間之內client都是連到同一台instance
+* application-controlled：讓ap server自訂cookie name
+
 ## SSH Login
 ssh -i keypair.pem xxxx@a.b.c.d
 
