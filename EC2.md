@@ -77,3 +77,6 @@ ssh -i keypair.pem xxxx@a.b.c.d
 * export EC2_CERT="~/aws/key/cert-amazon.pem"
 * export EC2_URL="http://ec2.ap-northeast-1.amazonaws.com"
 * export EC2_REGION="ap-northeast-1"
+
+### 測試是否成功
+執行ec2-describe-instances，若有出現多個instances就表示設定完成。
