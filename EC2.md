@@ -86,3 +86,14 @@ ssh -i keypair.pem xxxx@a.b.c.d
 
 ### 測試是否成功
 執行ec2-describe-instances，若有出現多個instances就表示設定完成。
+
+## 讀取metadata及userdata
+可以利用這些資料做到自動初始化，取得方式如下：
+* wget -qO- 169.254.169.254/latest/user-data
+* wget -qO- 169.254.169.254/latest/meta-data
+
+### metadata
+跟instance相關的資料，例如instance-id、local-ipv4、public-ipv4...等。
+
+### userdata
+管理者提供給instance的資料，例如要安裝哪些package，從metadata讀取IP之後在web server中設定...等。
