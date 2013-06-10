@@ -96,9 +96,4 @@ ssh -i keypair.pem xxxx@a.b.c.d
 跟instance相關的資料，例如instance-id、local-ipv4、public-ipv4...等。
 
 ### userdata
-管理者提供給instance的資料，例如要安裝哪些package，從metadata讀取IP之後在web server中設定...等。
-
-#### 利用ec2-run-user-data
-
-
-#### 利用runurl
+管理者提供給instance的資料，類似instance的tag。
