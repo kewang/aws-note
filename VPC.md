@@ -32,7 +32,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 * 一個EC2 instance，這個instance必須要加到這個VPC裡面才能跟其他instance連線，並且啟用EIP，這樣子instance才有Public IP可以讓Internet連線。
 * 一個route table，控制VPC裡面的所有resource要如何連線
 
-#### Routing
+#### 路由規則
 <table>
 	<tr>
 		<th>Destination</th>
@@ -48,6 +48,57 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 		<td>0.0.0.0/0</td>
 		<td>igw-xxxxxxxx</td>
 		<td>表示所有連線到0.0.0.0/0網段的request，都要走到internet gateway，這樣才能連線到Internet</td>
+	</tr>
+</table>
+
+#### 安全規則
+##### 流入
+<table>
+	<tr>
+		<th>Source</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許Internet可以讓所有HTTP連線連進來</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許Internet可以讓所有HTTPS連線連進來</td>
+	</tr>
+	<tr>
+		<td>x.x.x.x</td>
+		<td>TCP</td>
+		<td>22</td>
+		<td>允許特定IP可以使用SSH連進來</td>
+	</tr>
+</table>
+
+##### 流出
+<table>
+	<tr>
+		<th>Destination</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
 	</tr>
 </table>
 
