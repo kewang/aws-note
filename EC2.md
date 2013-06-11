@@ -1,6 +1,20 @@
 # EC2
 強大的虛擬機器，依照CPU及MEM的等級分為很多種type，免費版本(free-tier)是T1 Micro(t1.micro)
 
+## Supported Platform
+每個區域都有不同的支援平台，所有的區域都有EC2-VPC。2013/3之前的帳號，應該還會保留EC2-Classic，但2013/3之後的帳號，應該只剩EC2-VPC可以使用。[Amazon EC2 Update - Virtual Private Clouds for Everyone!](http://aws.typepad.com/aws/2013/03/amazon-ec2-update-virtual-private-clouds-for-everyone.html)
+
+### EC2-Classic
+* 在launch的時候，選擇的是AZ(availability zone)，跟subnet無關。
+* 所以aws會自己配置IP給instance，一般是10.0.0.0/8。
+* 另外沒辦法自己設計網路環境，所以新的帳號都沒有EC2-Classic選項了。
+
+### EC2-VPC
+* VPC為Virtual Private Cloud的縮寫，可以直接在VPC內建置自己的網路環境。
+* AWS為每個僅有VPC的region都做了一個預設VPC(default VPC)，裡面的網路環境是172.31.0.0/16。
+* 在launch的時候選擇的是subnet，就可以選擇你要使用哪一個subnet來launch instance。
+* VPC詳細資料可以看另一篇整理的VPC文件。
+
 ## AMI(Amazon Machine Image)
 新建instance時必須要掛載AMI，類似系統安裝檔。有amazon官方提供的，也有其他linux distro.提供的，但amazon提供的Amazon Linux(based on CentOS)有最佳化過。
 
