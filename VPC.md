@@ -33,7 +33,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 * 一個route table，控制VPC裡面的所有resource要如何連線
 
 #### Routing
-<table style="border: 1px solid black;">
+<table>
 	<tr>
 		<th>Destination</th>
 		<th>Target</th>
