@@ -12,7 +12,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 * subnet預設為172.31.0.0/16，在新建instance的時候會自己切兩個sub-subnet，分別為172.31.0.0/20及172.31.16.0/20。
 
 ## nondefault VPC
-如果想要自建私有雲，或是想客製化網路環境的話，可以自建VPC實作。因為自建VPC並不提供Public IP，所以必須搭配EIP及NAT...等技術才能與Internet連線。基本上有以下四種情境，其他的變型情境都可以用這四種來衍生。
+如果想要自建私有雲，或是想客製化網路環境的話，可以自建VPC實作。**因為自建VPC並不提供Public IP，所以必須搭配EIP及NAT...等技術才能與Internet連線**。基本上有以下四種情境，其他的變型情境都可以用這四種來衍生。
 
 1. Public Subnet – 用來提供公眾型的應用服務幾乎都應該適用，可大大增加安全性，也能自定內部IP位置
 2. **Public + Private Subnet – 有些用戶會想把DB Server等重要服務移至不能直接存取的區域，便可選此模式**
@@ -24,6 +24,29 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 
 ### Public Subnet
 ![Public Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case1_Diagram.png)
+
+#### 基礎元件
+* VPC底層使用10.0.0.0/16的subnet，可以提供65536個private IP
+* 一個sub-subnet，並且設定為10.0.0.0/24，這可以提供256個private IP
+* 一個Internet Gateway，這可以讓VPC連到Internet以及其他的AWS服務上面(例如S3)。
+* 一個EC2 instance，這個instance必須要加到這個VPC裡面才能跟其他instance連線，並且啟用EIP，這樣子instance才有Public IP可以讓Internet連線。
+* 一個route table，控制VPC裡面的所有resource要如何連線
+
+#### Routing
+<table style="border: 1px solid black;">
+	<tr>
+		<th>Destination</th>
+		<th>Target</th>
+	</tr>
+	<tr>
+		<td>10.0.0.0/16</td>
+		<td>local</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>igw-xxxxxxxx</td>
+	</tr>
+</table>
 
 ### Public + Private Subnet
 ![Public + Private Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case2_Diagram.png)
