@@ -37,14 +37,17 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 	<tr>
 		<th>Destination</th>
 		<th>Target</th>
+		<th>Description</th>
 	</tr>
 	<tr>
 		<td>10.0.0.0/16</td>
 		<td>local</td>
+		<td>表示所有連線到10.0.0.0/16網段的request，都要走local內網</td>
 	</tr>
 	<tr>
 		<td>0.0.0.0/0</td>
 		<td>igw-xxxxxxxx</td>
+		<td>表示所有連線到0.0.0.0/0網段的request，都要走到internet gateway，這樣才能連線到Internet</td>
 	</tr>
 </table>
 
