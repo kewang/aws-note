@@ -53,3 +53,17 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 
 ### Public + Private Subnet
 ![Public + Private Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case2_Diagram.png)
+
+## Security
+![Route Traffic](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Route_Traffic.png)
+
+### Security groups (SG)
+安全群組，屬於instance level的安全管理機制，必須與EC2 instance綁在一起。在launch一個instance如果沒選擇sg時，AWS會自動將instance指定到一個預設的sg。
+* 只支援ALLOW規則
+* 無論規則如何，response connection為永遠ALLOW
+
+### Network access control lists (ACLs)
+網路存取控制清單，屬於subnet level的安全管理機制，必須與subnet綁在一起。
+* 支援ALLOW及DENY規則
+* response connection會依照規則做控制
+* 規則會依照rule number的順序做套用
