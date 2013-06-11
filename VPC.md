@@ -23,6 +23,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 由於第三及第四種使用情境比較不符我們的使用方式，所以在此不深入研究，這邊只介紹第一及第二種情境。
 
 ### Public Subnet
-![Alt text](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case1_Diagram.png)
+![Public Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case1_Diagram.png)
 
 ### Public + Private Subnet
+![Public + Private Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case2_Diagram.png)
