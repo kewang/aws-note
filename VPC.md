@@ -316,13 +316,6 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 ## Security
 ![Route Traffic](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Route_Traffic.png)
 
-連線順序如下：
-
-1. Internet連線會先連到Internet Gateway之後，連進VPC。
-2. VPC會依照Routing Table，將不同的連線導到不同的subnet。
-3. 在連進subnet之前，會先套用Network ACL，限制連線的ALLOW或DENY。
-4. 在subnet分派連線給instance之前，會再透過SG限制是否可以連到instance。
-
 ### Security groups (SG)
 安全群組，屬於instance level的安全管理機制，必須與EC2 instance綁在一起。在launch一個instance如果沒選擇sg時，AWS會自動將instance指定到一個預設的sg。
 * 只支援ALLOW規則
