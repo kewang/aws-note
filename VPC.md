@@ -151,7 +151,64 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 	<tr>
 		<td>0.0.0.0/0</td>
 		<td>eni-xxxxxxxx / i-xxxxxxxx</td>
-		<td>表示所有連線到0.0.0.0/0網段的request，都要走到特定的網路介面(eni-xxxxxxxx)或NAT instance(i-xxxxxxxx)，這樣才能連線到Internet</td>
+		<td>表示所有連線到0.0.0.0/0網段的request，都要走到特定的網路介面(eni-xxxxxxxx)或NAT instance(i-xxxxxxxx)，這樣才能透過Public subnet的NAT instance連線到Internet</td>
+	</tr>
+</table>
+
+#### 安全規則
+
+##### WebServerSG
+給Public subnet裡面的web server使用
+
+<table>
+	<tr>
+		<th colspan="4">流入</th>
+	</tr>
+	<tr>
+		<th>Source</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許Internet可以讓所有HTTP連線連進來</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許Internet可以讓所有HTTPS連線連進來</td>
+	</tr>
+	<tr>
+		<td>x.x.x.x</td>
+		<td>TCP</td>
+		<td>22</td>
+		<td>允許特定IP可以使用SSH連進來</td>
+	</tr>
+</table>
+
+##### 流出
+<table>
+	<tr>
+		<th>Destination</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
 	</tr>
 </table>
 
