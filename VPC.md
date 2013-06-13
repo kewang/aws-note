@@ -112,7 +112,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 * 一個private subnet，並且設定為10.0.1.0/24，這可以提供256個private IP。
 * 一個Internet Gateway，這可以讓VPC連到Internet以及其他的AWS服務上面(例如S3)。
 * 將要對外的instance放在public subnet，例如web server；將不對外的instance放在private subnet，例如ap server和db server。
-* 一個NAT的instance，讓private subnet的instance利用這個instance可以與internet連線，主要功能是拿來做系統更新用。
+* 一個NAT的instance，讓private subnet的instance利用這個instance可以與internet連線，主要功能是拿來做系統更新用。使用VPC Wizard建立VPC時，AWS會自己新增一個m1.small的instance，並且使用的是amazon linux，而且也會自己新增一個EIP並綁在NAT instance上面。
 * 兩個route table，分別控制VPC裡面public及private subnet的所有resource要如何連線。
 
 #### 路由規則
@@ -312,6 +312,10 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
 	</tr>
 </table>
+
+#### 實務上應用
+
+
 
 ## Security
 ![Route Traffic](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Route_Traffic.png)
