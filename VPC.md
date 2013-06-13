@@ -188,10 +188,9 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 		<td>22</td>
 		<td>允許特定IP可以使用SSH連進來</td>
 	</tr>
-</table>
-
-##### 流出
-<table>
+	<tr>
+		<th colspan="4">流出</th>
+	</tr>
 	<tr>
 		<th>Destination</th>
 		<th>Protocol</th>
@@ -209,6 +208,12 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 		<td>TCP</td>
 		<td>443</td>
 		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+	<tr>
+		<td>DBServerSG-id</td>
+		<td>TCP</td>
+		<td>3306</td>
+		<td>允許套用這個rule的instance，可以直接連線到DB server(此處以MySQL為例)</td>
 	</tr>
 </table>
 
