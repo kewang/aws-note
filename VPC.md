@@ -217,6 +217,102 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 	</tr>
 </table>
 
+##### NATSG
+給Public subnet裡面的NAT instance使用。
+
+<table>
+	<tr>
+		<th colspan="4">流入</th>
+	</tr>
+	<tr>
+		<th>Source</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>10.0.1.0/24</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許讓private subnet的HTTP連線連進來</td>
+	</tr>
+	<tr>
+		<td>10.0.1.0/24</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許讓private subnet的HTTPS連線連進來</td>
+	</tr>
+	<tr>
+		<td>x.x.x.x</td>
+		<td>TCP</td>
+		<td>22</td>
+		<td>允許特定IP可以使用SSH連進來</td>
+	</tr>
+	<tr>
+		<th colspan="4">流出</th>
+	</tr>
+	<tr>
+		<th>Destination</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+</table>
+
+##### DBServerSG
+給Private subnet裡面的DB instance使用。
+
+<table>
+	<tr>
+		<th colspan="4">流入</th>
+	</tr>
+	<tr>
+		<th>Source</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>WebServerSG-id</td>
+		<td>TCP</td>
+		<td>3306</td>
+		<td>允許public subnet可以用DB connection(此處以MySQL為例)連進來</td>
+	</tr>
+	<tr>
+		<th colspan="4">流出</th>
+	</tr>
+	<tr>
+		<th>Destination</th>
+		<th>Protocol</th>
+		<th>Port Range</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>80</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>TCP</td>
+		<td>443</td>
+		<td>允許套用這個rule的instance，可以直接連線到Internet，一般是拿來做系統更新用</td>
+	</tr>
+</table>
+
 ## Security
 ![Route Traffic](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Route_Traffic.png)
 
