@@ -315,7 +315,9 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 
 #### 實務上應用
 
-
+1. 因為DB server需要用SSH連進去維護，所以DBServerSG的inbound必須要增加SSH (10.0.0.0/24)。
+2. 因為public subnet預設沒辦法用SSH連到private subnet，所以WebServerSG及NATSG的outbound必須要增加SSH (10.0.1.0/24)。
+3. 因為預設的SSH連線方式都為ssh -i xxx.pem uuu@a.b.c.d。用這方式會造成因為憑證在local端，沒辦法在public subnet用憑證登入private subnet的instance。所以解決方式之一為先調整private subnet的routing table，將0.0.0.0/0的routing暫時從NAT instance改為Internet Gateway，然後綁一個EIP在private subnet的instance上面。再用憑證+SSH登入後，修改sshd_config，改為用密碼登入。最後再移除EIP、還原routing table，這樣就可以在public subnet用密碼+SSH登入private subnet了。
 
 ## Security
 ![Route Traffic](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Route_Traffic.png)
