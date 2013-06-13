@@ -9,7 +9,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 ## default VPC
 如果你的region只有EC2-VPC而沒有EC2-Classic的話，在新增instance的時候就會有一個預設的VPC可以使用，並且有以下特性：
 * **每一個instance都有一個public IP**
-* subnet預設為172.31.0.0/16，在新建instance的時候會自己切兩個sub-subnet，分別為172.31.0.0/20及172.31.16.0/20。
+* 網段預設為172.31.0.0/16，在新建instance的時候會自己切兩個subnet，分別為172.31.0.0/20及172.31.16.0/20。
 
 ## nondefault VPC
 如果想要自建私有雲，或是想客製化網路環境的話，可以自建VPC實作。 **因為自建VPC並不提供Public IP，所以必須搭配EIP及NAT...等技術才能與Internet連線** 。基本上有以下四種情境，其他的變型情境都可以用這四種來衍生。
@@ -26,11 +26,11 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 ![Public Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case1_Diagram.png)
 
 #### 基礎元件
-* VPC底層使用10.0.0.0/16的subnet，可以提供65536個private IP
-* 一個sub-subnet，並且設定為10.0.0.0/24，這可以提供256個private IP
+* VPC底層使用10.0.0.0/16的網段，可以提供65536個private IP
+* 一個subnet，並且設定為10.0.0.0/24，這可以提供256個private IP。
 * 一個Internet Gateway，這可以讓VPC連到Internet以及其他的AWS服務上面(例如S3)。
 * 一個EC2 instance，這個instance必須要加到這個VPC裡面才能跟其他instance連線，並且啟用EIP，這樣子instance才有Public IP可以讓Internet連線。
-* 一個route table，控制VPC裡面的所有resource要如何連線
+* 一個route table，控制VPC裡面的所有resource要如何連線。
 
 #### 路由規則
 <table>
@@ -52,6 +52,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 </table>
 
 #### 安全規則
+
 ##### 流入
 <table>
 	<tr>
@@ -104,6 +105,55 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 
 ### Public + Private Subnet
 ![Public + Private Subnet](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Case2_Diagram.png)
+
+#### 基礎元件
+* VPC底層使用10.0.0.0/16的網段，可以提供65536個private IP
+* 一個public subnet，並且設定為10.0.0.0/24，這可以提供256個private IP。
+* 一個private subnet，並且設定為10.0.1.0/24，這可以提供256個private IP。
+* 一個Internet Gateway，這可以讓VPC連到Internet以及其他的AWS服務上面(例如S3)。
+* 將要對外的instance放在public subnet，例如web server；將不對外的instance放在private subnet，例如ap server和db server。
+* 一個NAT的instance，讓private subnet的instance利用這個instance可以與internet連線，主要功能是拿來做系統更新用。
+* 兩個route table，分別控制VPC裡面public及private subnet的所有resource要如何連線。
+
+#### 路由規則
+
+##### Public subnet
+<table>
+	<tr>
+		<th>Destination</th>
+		<th>Target</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>10.0.0.0/16</td>
+		<td>local</td>
+		<td>表示所有連線到10.0.0.0/16網段的request，都要走local內網</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>igw-xxxxxxxx</td>
+		<td>表示所有連線到0.0.0.0/0網段的request，都要走到internet gateway，這樣才能連線到Internet</td>
+	</tr>
+</table>
+
+##### Private subnet
+<table>
+	<tr>
+		<th>Destination</th>
+		<th>Target</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>10.0.0.0/16</td>
+		<td>local</td>
+		<td>表示所有連線到10.0.0.0/16網段的request，都要走local內網</td>
+	</tr>
+	<tr>
+		<td>0.0.0.0/0</td>
+		<td>eni-xxxxxxxx / i-xxxxxxxx</td>
+		<td>表示所有連線到0.0.0.0/0網段的request，都要走到特定的網路介面(eni-xxxxxxxx)或NAT instance(i-xxxxxxxx)，這樣才能連線到Internet</td>
+	</tr>
+</table>
 
 ## Security
 ![Route Traffic](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/images/Route_Traffic.png)
