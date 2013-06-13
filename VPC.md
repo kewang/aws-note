@@ -12,7 +12,7 @@ Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip ra
 * subnet預設為172.31.0.0/16，在新建instance的時候會自己切兩個sub-subnet，分別為172.31.0.0/20及172.31.16.0/20。
 
 ## nondefault VPC
-如果想要自建私有雲，或是想客製化網路環境的話，可以自建VPC實作。**因為自建VPC並不提供Public IP，所以必須搭配EIP及NAT...等技術才能與Internet連線** 。基本上有以下四種情境，其他的變型情境都可以用這四種來衍生。
+如果想要自建私有雲，或是想客製化網路環境的話，可以自建VPC實作。 **因為自建VPC並不提供Public IP，所以必須搭配EIP及NAT...等技術才能與Internet連線** 。基本上有以下四種情境，其他的變型情境都可以用這四種來衍生。
 
 1. Public Subnet – 用來提供公眾型的應用服務幾乎都應該適用，可大大增加安全性，也能自定內部IP位置
 2. **Public + Private Subnet – 有些用戶會想把DB Server等重要服務移至不能直接存取的區域，便可選此模式**
