@@ -13,7 +13,7 @@ Auto Scaling(以下簡稱AS)能讓你動態或定期的調整運算資源。因�
 * --instance-type：instance的等級，視情況而定。
 
 #### 新增Launch Configuration
-as-create-launch-config <name> 基本參數
+<pre>as-create-launch-config {NAME} 基本參數</pre>
 
 ### Auto Scaling Group
 定義AS在執行時，本身可以調整的參數，以下列出較常用的參數：
@@ -24,7 +24,7 @@ as-create-launch-config <name> 基本參數
 * --desired-capacity：AS預設執行時的instance數量，若沒有設定就以--min-size為主
 
 #### 新增Auto Scaling Group
-as-create-auto-scaling-group <name> 基本參數
+<pre>as-create-auto-scaling-group {NAME} 基本參數</pre>
 
 ## Scenario
 
