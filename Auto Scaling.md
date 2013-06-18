@@ -37,5 +37,6 @@ m1.small</pre>
 availability-zones us-east-1a --min-size 1 --max-size 10 --desired-capacity 1</pre>
 
 ### 動態調整
+![AS Workflow](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/images/AS-WorkFlow.png)
 
 ### 定期調整
