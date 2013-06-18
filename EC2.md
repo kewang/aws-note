@@ -93,8 +93,8 @@ ssh -i keypair.pem xxxx@a.b.c.d
 ### 設定環境變數
 在shell設定檔裡面(.zshrc, .bashrc...等)，設定以下的環境變數就可以了。
 
-* export EC2_PRIVATE_KEY="~/aws/key/pk-amazon.pem"
-* export EC2_CERT="~/aws/key/cert-amazon.pem"
+* export EC2_PRIVATE_KEY="aws/key/pk-amazon.pem"
+* export EC2_CERT="aws/key/cert-amazon.pem"
 * export EC2_URL="http://ec2.ap-northeast-1.amazonaws.com"
 * export EC2_REGION="ap-northeast-1"
 
