@@ -90,13 +90,19 @@ ssh -i keypair.pem xxxx@a.b.c.d
 * cert-amazon.pem：為EC2的cert
 * pk-amazon.pem：為EC2的private key
 
-### 設定環境變數
+### 設定環境變數(外部)
 在shell設定檔裡面(.zshrc, .bashrc...等)，設定以下的環境變數就可以了。
 
 * export EC2_PRIVATE_KEY="/home/kewang/aws/key/pk-amazon.pem"
 * export EC2_CERT="/home/kewang/aws/key/cert-amazon.pem"
 * export EC2_URL="http://ec2.ap-northeast-1.amazonaws.com"
 * export EC2_REGION="ap-northeast-1"
+
+### 設定環境變數(內部)
+在IAM新增User時，有下載一個credentials.csv，裡面包含了AWS_ACCESS_KEY及AWS_SECRET_KEY，這個部分必須設定在環境變數裡。
+
+* export AWS_ACCESS_KEY="AKIXXXAQEO5AMXXXX3PQ"
+* export AWS_SECRET_KEY="bZuXXXXVcTwu4QMVo8XXXX5ytVy4yN5OKXXXXeh1"
 
 ### 測試是否成功
 執行ec2-describe-instances，若有出現多個instances就表示設定完成。
