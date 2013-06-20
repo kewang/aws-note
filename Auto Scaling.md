@@ -26,6 +26,20 @@ Auto Scaling(以下簡稱AS)能讓你動態或定期的調整運算資源。因�
 #### 新增Auto Scaling Group
 <pre>as-create-auto-scaling-group {NAME} 基本參數</pre>
 
+### Scaling Policy
+定義AS在動態調整instance時的方式，通常用在ELB上面，以下列出較常用的參數：
+* --auto-scaling-group：為新增auto scaling group時的name
+* --adjustment：一次要開啟instance的值，要搭配--type及--auto-scaling-group才能算出來instance操作的台數。計算出來的台範圍必須介於auto scaling group的min size及max size之間。
+* --type：分為絕對數值、相對數值、百分比三種
+
+#### --type
+* ExactCapacity：絕對數值，若--adjustment為10，就是無論現在台數為多少，一律調整到10台instance。
+* ChangeInCapacity：相對數值，若--adjustment為5，就是現在的台數加5台；若--adjustment為-3，就是現在的台數減3台。
+* PercentChangeInCapacity：百分比，若--adjustment為20，並假設auto scaling group的desired capacity為5，就是現在的台數加5*20%=1台。如果計算出來的值在0~1之間為1；大於1為無條件捨去。
+
+#### 新增Auto Scaling Policy
+<pre>as-put-scaling-policy {NAME} 基本參數</pre>
+
 ## Scenario
 
 ### 維護固定數量
