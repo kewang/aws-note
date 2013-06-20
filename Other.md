@@ -29,3 +29,8 @@ sudo /etc/init.d/nfslock start</pre>
 
 檢查是否可與NFS Server連線
 <pre>showmount -e 172.31.14.244</pre>
+
+掛載NFS目錄
+<pre>sudo mkdir /opt/nfs
+sudo mount -t nfs 172.31.14.244:/opt/nfs /opt/nfs
+sudo chown ec2-user:ec2-user /opt/nfs</pre>
