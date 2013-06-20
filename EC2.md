@@ -78,10 +78,9 @@ ssh -i keypair.pem xxxx@a.b.c.d
 ### 自訂Login Prompt
 因為登入instance時不知道目前在的機器為何，所以使用下面的shell script重新客製Login Prompt
 
-<pre>INSTANCE_ID=$(wget -qO- 169.254.169.254/latest/meta-data/instance-id)</pre>
-<pre>INSTANCE_NAME=$(ec2-describe-tags --region ap-northeast-1 --filter "resource-id=$INSTANCE_ID" | awk '{if($4=="Name") print $5}')</pre>
-
-<pre>export PS1="[\u@\h($INSTANCE_NAME) \W]\$ "</pre>
+<pre>INSTANCE_ID=$(wget -qO- 169.254.169.254/latest/meta-data/instance-id)
+INSTANCE_NAME=$(ec2-describe-tags --region ap-northeast-1 --filter "resource-id=$INSTANCE_ID" | awk '{if($4=="Name") print $5}')
+export PS1="[\u@\h($INSTANCE_NAME) \W]\$ "</pre>
 
 
 ## EC2 API Tools
