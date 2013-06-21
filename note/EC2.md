@@ -1,5 +1,5 @@
 # EC2
-強大的虛擬機器，依照CPU及MEM的等級分為很多種type，免費版本(free-tier)是T1 Micro(t1.micro)
+強大的虛擬機器，依照CPU及MEM的等級分為很多種type，免費版本(free-tier)是T1 Micro(t1.micro)，production時儘量不要用t1.micro(因為記憶體太小)，至少也要用m1.small。
 
 ## Supported Platform
 每個區域都有不同的支援平台，所有的區域都有EC2-VPC。2013/3之前的帳號，應該還會保留EC2-Classic，但2013/3之後的帳號，應該只剩EC2-VPC可以使用。[Amazon EC2 Update - Virtual Private Clouds for Everyone!](http://aws.typepad.com/aws/2013/03/amazon-ec2-update-virtual-private-clouds-for-everyone.html)
@@ -36,12 +36,15 @@ EC2的metadata，因為EC2沒有階層關係，可以利用tag模擬階層。例
 * server-type: web, ftp, mail...
 
 ## EBS(elastic block store)
-類似SAN(Storage area network)的概念，可以隨時mount儲存區到EC2上面，並且可以隨時做snapshot，方便備份。Mount的指令如下，假設目前位置為/dev/xvdf：
+一般EBS的IOPS為100左右，類似SAN(Storage area network)的概念，可以隨時mount儲存區到EC2上面，並且可以隨時做snapshot，方便備份。Mount的指令如下，假設目前位置為/dev/xvdf：
 
-1. sudo mkfs.ext4 /dev/xvdf
-2. sudo mkdir -m 000 /vol
-3. echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
-4. sudo mount /vol
+<pre>sudo mkfs.ext4 /dev/xvdf
+sudo mkdir -m 000 /vol
+echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
+sudo mount /vol</pre>
+
+### Provisoned IOPS
+IOPS最高4000，large以上才能使用Provisoned IOPS
 
 ## Security Groups
 防火牆的規則，可以設定inbound(連入)及outbound(連出)。
