@@ -53,22 +53,13 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 * Unhealthy：若ELB裡面的instance為OutOfService，則為unhealthy。
 
 ## Termination Policy
-當scaling policy要關閉instance(例：原本5台，要關閉成3台；原本5台，要減少20%的instance...等)，或是health check監控到有unhealthy的instance時，就會觸發termination policy。policy總共分為下面5種。
+當scaling policy要關閉instance(例：原本5台，要關閉成3台；原本5台，要減少20%的instance...等)，或是health check監控到有unhealthy的instance時，就會觸發termination policy。policy總共分為下面5種：
 
-### OldestInstance
-AS會把最先launch的instance關閉。
-
-### NewestInstance
-AS會把最後launch的instance關閉。
-
-### OldestLaunchConfiguration
-因為同一個auto scaling group可能會套用多個launch configuration，所以這個方式會把使用最早的launch configuration所launch的instance關閉。
-
-### ClosestToNextInstanceHour
-因為instance每一個小時都會收費，所以這個方式大致就是依照最近一次要收費的instance關閉。
-
-### Default
-先用 **OldestLaunchConfiguration** 的方式，若有多個instance符合的話再用 **ClosestToNextInstanceHour** ，若有多個instance符合的話再用 **亂數選擇** 其中一台instance關閉。
+* OldestInstance：AS會把最先launch的instance關閉。
+* NewestInstance：AS會把最後launch的instance關閉。
+* OldestLaunchConfiguration：因為同一個auto scaling group可能會套用多個launch configuration，所以這個方式會把使用最早的launch configuration所launch的instance關閉。
+* ClosestToNextInstanceHour：因為instance每一個小時都會收費，所以這個方式大致就是依照最近一次要收費的instance關閉。
+* Default：先用 **OldestLaunchConfiguration** 的方式，若有多個instance符合的話再用 **ClosestToNextInstanceHour** ，若有多個instance符合的話再用 **亂數選擇** 其中一台instance關閉。
 
 ## Scenario
 
