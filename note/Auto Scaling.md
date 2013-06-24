@@ -49,7 +49,7 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 * Unhealthy：若開啟的auto scaling instance不為running，則為unhealthy。
 
 #### ELB
-若AS與ELB連結在一起時，則health check type就會**多一種選擇**，可以指定由EC2的instance status或ELB的health check來評斷。
+若AS與ELB連結在一起時，則health check type就會 **多一種選擇** ，可以指定由EC2的instance status或ELB的health check來評斷。
 * Healthy：若ELB裡面的instance為InService，則為healthy。
 * Unhealthy：若ELB裡面的instance為OutOfService，則為unhealthy。
 
