@@ -40,7 +40,7 @@ Auto Scaling(以下簡稱AS)能讓你動態或定期的調整運算資源。因�
 <pre>as-put-scaling-policy {NAME} 基本參數</pre>
 
 ## Health Check
-AS開啟instance之後，會針對這些instance做監控，並分為healthy及unhealthy兩種狀態。若instance狀態變為unhealthy時，則會，但也會因為health check type分為EC2及ELB而有不同的評斷方式，分別介紹如下。
+AS開啟instance之後，會針對這些instance做監控，並分為healthy及unhealthy兩種狀態。若instance狀態變為unhealthy時，則會根據launch configuration，再launch一台新的instance，並且將unhealthy的instance關閉。但也會因為health check type分為EC2及ELB而有不同的評斷方式，分別介紹如下。
 
 ### EC2
 預設的health check type，在新增auto scaling group未指定health check type時，就會使用這種類型。
