@@ -71,6 +71,7 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 
 ### 動態調整
 ![AS Workflow](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/images/AS-WorkFlow.png)
+
 新增名稱為my-test-lc的launch configuration，在開啟instance時使用的AMI為ami-514ac838，而且開啟的instance等級為m1.small。
 <pre>as-create-launch-config my-test-lc --image-id ami-514ac838 --instance-type m1.small</pre>
 新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1e的AZ，執行時最少開1台，最多開5台，初始化時先開啟1台。
@@ -79,5 +80,9 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 <pre>as-put-scaling-policy my-scaleout-policy -–auto-scaling-group my-test-asg --adjustment 30 --type PercentChangeInCapacity</pre>
 新增名稱為my-scalein-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，關閉兩台instance。
 <pre>as-put-scaling-policy my-scalein-policy –auto-scaling-group my-test-asg --adjustment -2 --type ChangeInCapacity</pre>
+新增名稱為AddCapacity的CloudWatch，監控方式為每120秒監控一次名稱為my-test-asg的auto scaling group，若連續兩次的CPU使用率(CPUUtilization)大於等於80%，則啟動名稱為SCALE-OUT-POLICY的scaling policy。
+<pre>mon-put-metric-alarm --alarm-name AddCapacity --metric-name CPUUtilization --namespace "AWS/EC2" --statistic Average --period 120 --threshold 80 --comparison-operator GreaterThanOrEqualToThreshold --dimensions "AutoScalingGroupName=my-test-asg" --evaluation-periods 2 --alarm-actions {SCALE-OUT-POLICY}</pre>
+新增名稱為RemoveCapacity的CloudWatch，監控方式為每120秒監控一次名稱為my-test-asg的auto scaling group，若連續兩次的CPU使用率(CPUUtilization)小於等於40%，則啟動名稱為SCALE-IN-POLICY的scaling policy。
+<pre>mon-put-metric-alarm --alarm-name AddCapacity --metric-name CPUUtilization --namespace "AWS/EC2" --statistic Average --period 120 --threshold 40 --comparison-operator LessThanOrEqualToThreshold --dimensions "AutoScalingGroupName=my-test-asg" --evaluation-periods 2 --alarm-actions {SCALE-IN-POLICY}</pre>
 
 ### 定期調整
