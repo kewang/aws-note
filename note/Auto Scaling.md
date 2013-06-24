@@ -20,6 +20,7 @@ Auto Scaling(以下簡稱AS)能讓你動態或定期的調整運算資源。因�
 * --max-size：最多開幾台instance
 * --min-size：最少開幾台instance
 * --desired-capacity：AS預設執行時的instance數量，若沒有設定就以--min-size為主
+* -–termination-policies：定義關閉instance時的方式，稍後詳述。
 
 ### 新增Auto Scaling Group
 <pre>as-create-auto-scaling-group {NAME} 基本參數</pre>
@@ -50,6 +51,24 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 若AS與ELB連結在一起時，則health check type就會 **多一種選擇** ，可以指定由EC2的instance status或ELB的health check來評斷。
 * Healthy：若ELB裡面的instance為InService，則為healthy。
 * Unhealthy：若ELB裡面的instance為OutOfService，則為unhealthy。
+
+## Termination Policy
+當scaling policy要關閉instance(例：原本5台，要關閉成3台；原本5台，要減少20%的instance...等)，或是health check監控到有unhealthy的instance時，就會觸發termination policy。policy總共分為下面5種。
+
+### OldestInstance
+AS會把最先launch的instance關閉。
+
+### NewestInstance
+AS會把最後launch的instance關閉。
+
+### OldestLaunchConfiguration
+因為同一個auto scaling group可能會套用多個launch configuration，所以這個方式會把使用最早的launch configuration所launch的instance關閉。
+
+### ClosestToNextInstanceHour
+因為instance每一個小時都會收費，所以這個方式大致就是依照最近一次要收費的instance關閉。
+
+### Default
+先用 **OldestLaunchConfiguration** 的方式，若有多個instance符合的話再用 **ClosestToNextInstanceHour** ，若有多個instance符合的話再用 **亂數選擇** 其中一台instance關閉。
 
 ## Scenario
 
