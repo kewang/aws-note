@@ -83,6 +83,6 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 新增名稱為AddCapacity的CloudWatch，監控方式為每120秒監控一次名稱為my-test-asg的auto scaling group，若連續兩次的CPU使用率(CPUUtilization)大於等於80%，則啟動名稱為SCALE-OUT-POLICY的scaling policy。
 <pre>mon-put-metric-alarm --alarm-name AddCapacity --metric-name CPUUtilization --namespace "AWS/EC2" --statistic Average --period 120 --threshold 80 --comparison-operator GreaterThanOrEqualToThreshold --dimensions "AutoScalingGroupName=my-test-asg" --evaluation-periods 2 --alarm-actions {SCALE-OUT-POLICY}</pre>
 新增名稱為RemoveCapacity的CloudWatch，監控方式為每120秒監控一次名稱為my-test-asg的auto scaling group，若連續兩次的CPU使用率(CPUUtilization)小於等於40%，則啟動名稱為SCALE-IN-POLICY的scaling policy。
-<pre>mon-put-metric-alarm --alarm-name AddCapacity --metric-name CPUUtilization --namespace "AWS/EC2" --statistic Average --period 120 --threshold 40 --comparison-operator LessThanOrEqualToThreshold --dimensions "AutoScalingGroupName=my-test-asg" --evaluation-periods 2 --alarm-actions {SCALE-IN-POLICY}</pre>
+<pre>mon-put-metric-alarm --alarm-name RemoveCapacity --metric-name CPUUtilization --namespace "AWS/EC2" --statistic Average --period 120 --threshold 40 --comparison-operator LessThanOrEqualToThreshold --dimensions "AutoScalingGroupName=my-test-asg" --evaluation-periods 2 --alarm-actions {SCALE-IN-POLICY}</pre>
 
 ### 定期調整
