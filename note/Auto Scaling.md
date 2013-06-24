@@ -63,15 +63,21 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 
 ## Scenario
 
-### 維護固定數量
+### 手動維護固定數量
 新增名稱為my-test-lc的launch configuration，在開啟instance時使用的AMI為ami-0078da69，而且開啟的instance等級為m1.small。
-<pre>as-create-launch-config my-test-lc --image-id ami-0078da69 --instance-type
-m1.small</pre>
+<pre>as-create-launch-config my-test-lc --image-id ami-0078da69 --instance-type m1.small</pre>
 新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1a的AZ，執行時最少開1台，最多開10台，初始化時先開啟1台。
-<pre>as-create-auto-scaling-group my-test-asg --launch-configuration my-test-lc --
-availability-zones us-east-1a --min-size 1 --max-size 10 --desired-capacity 1</pre>
+<pre>as-create-auto-scaling-group my-test-asg --launch-configuration my-test-lc --availability-zones us-east-1a --min-size 1 --max-size 10 --desired-capacity 1</pre>
 
 ### 動態調整
 ![AS Workflow](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/images/AS-WorkFlow.png)
+新增名稱為my-test-lc的launch configuration，在開啟instance時使用的AMI為ami-514ac838，而且開啟的instance等級為m1.small。
+<pre>as-create-launch-config my-test-lc --image-id ami-514ac838 --instance-type m1.small</pre>
+新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1e的AZ，執行時最少開1台，最多開5台，初始化時先開啟1台。
+<pre>as-create-auto-scaling-group my-test-asg --launch-configuration my-test-lc --availability-zones us-east-1e --max-size 5 --min-size 1</pre>
+新增名稱為my-scaleout-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，開啟現在instance數量30%的instance。
+<pre>as-put-scaling-policy my-scaleout-policy -–auto-scaling-group my-test-asg --adjustment 30 --type PercentChangeInCapacity</pre>
+新增名稱為my-scalein-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，關閉兩台instance。
+<pre>as-put-scaling-policy my-scalein-policy –auto-scaling-group my-test-asg --adjustment -2 --type ChangeInCapacity</pre>
 
 ### 定期調整
