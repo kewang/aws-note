@@ -19,7 +19,7 @@ Auto Scaling(以下簡稱AS)能讓你動態或定期的調整運算資源。因�
 * --launch-configuration：開啟instance時的基本參數，為新增launch configuration時的name
 * --max-size：最多開幾台instance
 * --min-size：最少開幾台instance
-* --desired-capacity：AS預設執行時的instance數量，若沒有設定就以--min-size為主
+* --desired-capacity：AS期望執行的instance數量，若沒有設定就以--min-size為主
 * -–termination-policies：定義關閉instance時的方式，稍後詳述。
 
 ### 新增Auto Scaling Group
@@ -66,7 +66,7 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 ### 手動維護固定數量
 新增名稱為my-test-lc的launch configuration，在開啟instance時使用的AMI為ami-0078da69，而且開啟的instance等級為m1.small。
 <pre>as-create-launch-config my-test-lc --image-id ami-0078da69 --instance-type m1.small</pre>
-新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1a的AZ，執行時最少開1台，最多開10台，初始化時先開啟1台。
+新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1a的AZ，執行時最少開1台，最多開10台，期望值設定為1。
 <pre>as-create-auto-scaling-group my-test-asg --launch-configuration my-test-lc --availability-zones us-east-1a --min-size 1 --max-size 10 --desired-capacity 1</pre>
 
 ### 動態調整
@@ -74,11 +74,11 @@ AS開啟instance之後，會針對這些instance做監控，並分為healthy及u
 
 新增名稱為my-test-lc的launch configuration，在開啟instance時使用的AMI為ami-514ac838，而且開啟的instance等級為m1.small。
 <pre>as-create-launch-config my-test-lc --image-id ami-514ac838 --instance-type m1.small</pre>
-新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1e的AZ，執行時最少開1台，最多開5台，初始化時先開啟1台。
+新增名稱為my-test-asg的auto scaling group，使用名稱為my-test-lc的launch configuration，並套用在us-east-1e的AZ，執行時最少開1台，最多開5台，並且期望值設定為1。
 <pre>as-create-auto-scaling-group my-test-asg --launch-configuration my-test-lc --availability-zones us-east-1e --max-size 5 --min-size 1</pre>
-新增名稱為my-scaleout-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，開啟現在instance數量30%的instance。
+新增名稱為my-scaleout-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，變更desired capacity數量30%的instance。
 <pre>as-put-scaling-policy my-scaleout-policy -–auto-scaling-group my-test-asg --adjustment 30 --type PercentChangeInCapacity</pre>
-新增名稱為my-scalein-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，關閉兩台instance。
+新增名稱為my-scalein-policy的scaling policy，套用在名稱為my-test-asg的auto scaling group上面，並且在達到條件(CloudWatch)的時候，將desired capacity減2。
 <pre>as-put-scaling-policy my-scalein-policy –auto-scaling-group my-test-asg --adjustment -2 --type ChangeInCapacity</pre>
 新增名稱為AddCapacity的CloudWatch，監控方式為每120秒監控一次名稱為my-test-asg的auto scaling group，若連續兩次的CPU使用率(CPUUtilization)大於等於80%，則啟動名稱為SCALE-OUT-POLICY的scaling policy。
 <pre>mon-put-metric-alarm --alarm-name AddCapacity --metric-name CPUUtilization --namespace "AWS/EC2" --statistic Average --period 120 --threshold 80 --comparison-operator GreaterThanOrEqualToThreshold --dimensions "AutoScalingGroupName=my-test-asg" --evaluation-periods 2 --alarm-actions {SCALE-OUT-POLICY}</pre>
