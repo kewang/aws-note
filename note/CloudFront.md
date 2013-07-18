@@ -64,3 +64,15 @@
 1. 先指定一個s3的bucket，這是要給CloudFront用的，例如：ggg.s3.amazonaws.com
 2. 當distribution新增後，會產生一組domain name，例如：dgh6d9b753lda.cloudfront.net
 3. 在DNS管理介面增加CNAME，將CloudFront與自己domain連結起來，例如：「ggg.com CNAME dgh6d9b753lda.cloudfront.net」，這樣就完成了
+
+## 測試方式
+
+`wget -v -d CLOUDFRONT_URL`，如果有類似以下的response的話，就沒有問題了。
+
+```
+Server: AmazonS3
+Age: 472
+Via: 1.0 deb7de8c3532115bc204a34a1fb2f44b.cloudfront.net (CloudFront)
+X-Cache: Hit from cloudfront
+X-Amz-Cf-Id: VHZaPtS1rSC1DLcZSLaepPNyqBzi4SZy959q5FM4nkS38h68hMWt_g==
+```
