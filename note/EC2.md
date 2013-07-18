@@ -38,10 +38,12 @@ EC2的metadata，因為EC2沒有階層關係，可以利用tag模擬階層。例
 ## EBS(elastic block store)
 一般EBS的IOPS為100左右，類似SAN(Storage area network)的概念，可以隨時mount儲存區到EC2上面，並且可以隨時做snapshot，方便備份。Mount的指令如下，假設目前位置為/dev/xvdf：
 
-<pre>sudo mkfs.ext4 /dev/xvdf
+```bash
+sudo mkfs.ext4 /dev/xvdf
 sudo mkdir -m 000 /vol
 echo "/dev/xvdf /vol auto noatime 0 0" | sudo tee -a /etc/fstab
-sudo mount /vol</pre>
+sudo mount /vol
+```
 
 ### Provisoned IOPS
 IOPS最高4000，large以上才能使用Provisoned IOPS
@@ -81,10 +83,11 @@ ssh -i keypair.pem xxxx@a.b.c.d
 ### 自訂Login Prompt
 因為登入instance時不知道目前在的機器為何，所以使用下面的shell script重新客製Login Prompt
 
-<pre>INSTANCE_ID=$(wget -qO- 169.254.169.254/latest/meta-data/instance-id)
+```bash
+INSTANCE_ID=$(wget -qO- 169.254.169.254/latest/meta-data/instance-id)
 INSTANCE_NAME=$(ec2-describe-tags --region ap-northeast-1 --filter "resource-id=$INSTANCE_ID" | awk '{if($4=="Name") print $5}')
-export PS1="[\u@\h($INSTANCE_NAME) \W]\$ "</pre>
-
+export PS1="[\u@\h($INSTANCE_NAME) \W]\$ "
+```
 
 ## EC2 API Tools
 因為不是所有的EC2功能(如：Auto Scaling)都有網頁介面，所以必須要利用Command Line操作EC2。操作Tools之前要設定憑證及環境變數。
@@ -92,10 +95,12 @@ export PS1="[\u@\h($INSTANCE_NAME) \W]\$ "</pre>
 ### 設定憑證
 因為一般操作EC2或其他AWS服務的管理人員可能不一樣，所以要在IAM上面設定憑證來控制權限，控制哪些服務可以給哪些管理人員使用。
 
-1. openssl genrsa -out pk-amazon.pem 2048
-2. openssl req -new -x509 -key pk-amazon.pem -out **cert-amazon.pem** -days 3650
-3. openssl pkcs8 -topk8 -in pk-amazon.pem -nocrypt > pk-temp.pem
-4. mv pk-temp.pem **pk-amazon.pem**
+```bash
+openssl genrsa -out pk-amazon.pem 2048
+openssl req -new -x509 -key pk-amazon.pem -out cert-amazon.pem -days 3650
+openssl pkcs8 -topk8 -in pk-amazon.pem -nocrypt > pk-temp.pem
+mv pk-temp.pem pk-amazon.pem
+```
 
 以上指令完成之後所產生的cert-amazon及pk-amazon就是我們要的憑證檔，最後到IAM裡面的User設定值有一個Manage Signing Certificates，複製cert內容就完成憑證設定。
 * cert-amazon.pem：為EC2的cert
@@ -104,19 +109,23 @@ export PS1="[\u@\h($INSTANCE_NAME) \W]\$ "</pre>
 ### 設定環境變數(外部)
 在shell設定檔裡面(.zshrc, .bashrc...等)，設定以下的環境變數就可以了。
 
-* export EC2_PRIVATE_KEY="/home/kewang/aws/key/pk-amazon.pem"
-* export EC2_CERT="/home/kewang/aws/key/cert-amazon.pem"
-* export EC2_URL="http://ec2.ap-northeast-1.amazonaws.com"
-* export EC2_REGION="ap-northeast-1"
+```bash
+export EC2_PRIVATE_KEY="/home/kewang/aws/key/pk-amazon.pem"
+export EC2_CERT="/home/kewang/aws/key/cert-amazon.pem"
+export EC2_URL="http://ec2.ap-northeast-1.amazonaws.com"
+export EC2_REGION="ap-northeast-1"
+```
 
 ### 設定環境變數(內部)
 在IAM新增User時，有下載一個credentials.csv，裡面包含了AWS_ACCESS_KEY及AWS_SECRET_KEY，這個部分必須設定在環境變數裡。
 
-* export AWS_ACCESS_KEY="AKIXXXAQEO5AMXXXX3PQ"
-* export AWS_SECRET_KEY="bZuXXXXVcTwu4QMVo8XXXX5ytVy4yN5OKXXXXeh1"
+```bash
+export AWS_ACCESS_KEY="AKIXXXAQEO5AMXXXX3PQ"
+export AWS_SECRET_KEY="bZuXXXXVcTwu4QMVo8XXXX5ytVy4yN5OKXXXXeh1"
+```
 
 ### 測試是否成功
-執行ec2-describe-instances，若有出現多個instances就表示設定完成。
+執行`ec2-describe-instances`，若有出現多個instances就表示設定完成。
 
 ## 讀取metadata及userdata
 可以在instance內利用這些資料做到自動初始化，取得方式如下：
