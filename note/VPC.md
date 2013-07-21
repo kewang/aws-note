@@ -1,6 +1,12 @@
 # VPC
 Virtual Private Cloud，你可以完全自訂這個網路裡面的subnet、ip range、routing table、gateway、security...等，當然也可以加EC2的instance進去。
 
+## VPC及相關resource的對應關係
+* 一個Region可以有多個VPCs
+* 一個VPC可跨多個AZs
+* 一個AZ可以有多個subnets
+* 一個subnet可以有多個instances
+
 ## Subnet
 是一段IP位址的範圍，aws的resource都可以擺在subnet裡面。一般會分為兩種：
 * Public Subnet：可以連上Internet的叫做Public Subnet
