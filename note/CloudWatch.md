@@ -27,3 +27,6 @@
 依照不同評測資料而有不同的action，例如EC2的Instance metric可以寄送mail、關機，而EBS的相關metric只能寄送mail。另外，也會依照不同的action type而有不同的執行次數。
 * 執行auto scaling時，action會在alarm時持續執行，直到轉換狀態。
 * 執行SNS時，action只會在第一次達到alarm時執行一次。
+
+### 客製Metric
+[Amazon CloudWatch Concepts](http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/cloudwatch_concepts.html)
